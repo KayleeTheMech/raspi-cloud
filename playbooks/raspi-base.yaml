@@ -1,0 +1,17 @@
+---
+- name: Updating Raspberry PI
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: targets
+  tasks:
+    - name: Update cache
+      become: yes
+      become_method: sudo
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+    - name: Update all packages to the latest version
+      become: yes
+      become_method: sudo
+      apt:
+        upgrade: dist
