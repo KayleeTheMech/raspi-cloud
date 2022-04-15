@@ -22,9 +22,12 @@
   register: root_pwd_check
 
 - name: Set MariaDB root password for the first time
+  become: yes
+  become_method: "sudo"
   mysql_user:
+    state: present
     name: root
     password: "{{ mariadb_root_password }}"
-    host_all: yes
-    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    priv: "*.*:ALL,GRANT"
   when: root_pwd_check.rc == 0
